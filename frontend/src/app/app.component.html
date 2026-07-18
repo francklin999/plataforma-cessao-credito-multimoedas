@@ -1,0 +1,38 @@
+<header><strong>SRM</strong> Credit Engine <span>Operações de crédito</span></header>
+<main>
+  <section class="card">
+    <h1>Simular cessão de crédito</h1>
+    <p class="muted">As taxas mensais usam formato decimal: 1% = 0,01.</p>
+    <div class="form-grid">
+      <label>Cedente <input [(ngModel)]="cedent" name="cedent"></label>
+      <label>Valor de face <input type="number" min="0.01" [(ngModel)]="form.faceValue" name="faceValue"></label>
+      <label>Tipo
+        <select [(ngModel)]="form.receivableType" name="type">
+          <option value="DUPLICATA_MERCANTIL">Duplicata mercantil</option>
+          <option value="CHEQUE_PRE_DATADO">Cheque pré-datado</option>
+        </select>
+      </label>
+      <label>Prazo (meses) <input type="number" min="0" [(ngModel)]="form.termInMonths" name="term"></label>
+      <label>Taxa base mensal <input type="number" min="0" step="0.001" [(ngModel)]="form.baseRate" name="rate"></label>
+      <label>Moeda do título <select [(ngModel)]="form.assetCurrency" name="asset"><option>BRL</option><option>USD</option></select></label>
+      <label>Moeda de pagamento <select [(ngModel)]="form.paymentCurrency" name="payment"><option>BRL</option><option>USD</option></select></label>
+    </div>
+    <div class="actions"><button (click)="simulate()" [disabled]="loading">Simular</button><button class="primary" (click)="settle()" [disabled]="loading">Liquidar</button></div>
+    <p class="error" *ngIf="error">{{ error }}</p>
+  </section>
+
+  <section class="card result" *ngIf="simulation">
+    <h2>Resultado da simulação</h2>
+    <div><span>Spread aplicado</span><strong>{{ simulation.appliedSpread | percent:'1.2-2' }}</strong></div>
+    <div><span>Valor presente na moeda do título</span><strong>{{ simulation.presentValueInAssetCurrency | number:'1.2-4' }}</strong></div>
+    <div><span>Taxa de câmbio</span><strong>{{ simulation.exchangeRate | number:'1.2-6' }}</strong></div>
+    <div><span>Valor de liquidação ({{ simulation.paymentCurrency }})</span><strong>{{ simulation.presentValue | number:'1.2-4' }}</strong></div>
+  </section>
+
+  <section class="card"><h2>Extrato de liquidações</h2>
+    <table><thead><tr><th>Data</th><th>Cedente</th><th>Tipo</th><th>Moeda</th><th>Valor presente</th></tr></thead>
+      <tbody><tr *ngFor="let item of settlements"><td>{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</td><td>{{ item.cedent }}</td><td>{{ item.receivableType }}</td><td>{{ item.paymentCurrency }}</td><td>{{ item.presentValue | number:'1.2-4' }}</td></tr>
+      <tr *ngIf="!settlements.length"><td colspan="5" class="muted">Nenhuma liquidação registrada.</td></tr></tbody>
+    </table>
+  </section>
+</main>
