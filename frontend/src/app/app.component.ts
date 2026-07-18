@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CreditEngineApiService, PricingRequest, PricingResponse, Settlement } from './credit-engine-api.service';
+import { CreditEngineApiService } from './core/services/credit-engine-api.service';
+import { ExchangeRateRequest, PricingRequest, PricingResponse, Settlement, SettlementFormValue } from './core/models/credit-engine.models';
 
 @Component({
   selector: 'app-root',
@@ -7,33 +8,38 @@ import { CreditEngineApiService, PricingRequest, PricingResponse, Settlement } f
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  form: PricingRequest = {
-    faceValue: 1000, receivableType: 'DUPLICATA_MERCANTIL', termInMonths: 1,
-    baseRate: 0.01, assetCurrency: 'BRL', paymentCurrency: 'USD'
-  };
-  cedent = 'Empresa Exemplo Ltda';
   simulation?: PricingResponse;
   settlements: Settlement[] = [];
   error = '';
   loading = false;
+  rateLoading = false;
+  rateMessage = '';
 
   constructor(private readonly api: CreditEngineApiService) { }
 
   ngOnInit(): void { this.loadStatement(); }
 
-  simulate(): void {
+  simulate(request: PricingRequest): void {
     this.error = ''; this.loading = true;
-    this.api.simulate(this.form).subscribe({
+    this.api.simulate(request).subscribe({
       next: result => { this.simulation = result; this.loading = false; },
       error: err => { this.error = err.error?.message ?? 'Não foi possível simular a operação.'; this.loading = false; }
     });
   }
 
-  settle(): void {
+  settle(formValue: SettlementFormValue): void {
     this.error = ''; this.loading = true;
-    this.api.settle(this.cedent, this.form).subscribe({
+    this.api.settle(formValue.cedent, formValue.pricing).subscribe({
       next: () => { this.loading = false; this.loadStatement(); },
       error: err => { this.error = err.error?.message ?? 'Não foi possível liquidar a operação.'; this.loading = false; }
+    });
+  }
+
+  saveExchangeRate(request: ExchangeRateRequest): void {
+    this.rateMessage = ''; this.rateLoading = true;
+    this.api.saveExchangeRate(request).subscribe({
+      next: () => { this.rateMessage = 'Taxa de câmbio salva com sucesso.'; this.rateLoading = false; },
+      error: err => { this.rateMessage = err.error?.message ?? 'Não foi possível salvar a taxa de câmbio.'; this.rateLoading = false; }
     });
   }
 

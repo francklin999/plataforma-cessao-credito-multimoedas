@@ -1,0 +1,2 @@
+.card { background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 9px #102a4314; }.result { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }.result h2 { grid-column: 1 / -1; margin: 0; font-size: 18px; }.result span { display: block; color: #66788a; margin-bottom: 6px; }.result strong { font-size: 16px; }
+@media (max-width: 700px) { .result { grid-template-columns: 1fr; } }

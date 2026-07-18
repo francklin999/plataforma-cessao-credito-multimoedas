@@ -15,6 +15,8 @@ Plataforma para simular e liquidar cessões de crédito em BRL e USD.
 - `frontend/`: painel do operador.
 - `docs/`: diagramas e decisões técnicas.
 
+Documentação complementar: [arquitetura e aceite](docs/architecture.md) e [diagrama ER](docs/er-diagram.md).
+
 ## Executar
 
 Com Docker Desktop em execução:
@@ -25,6 +27,7 @@ docker compose up --build
 
 - API: `http://localhost:8080`
 - Swagger: `http://localhost:8080/swagger-ui.html`
+- Painel do operador: `http://localhost:4200`
 
 ## Regras de precificação
 
@@ -35,7 +38,7 @@ As taxas devem ser enviadas em formato decimal: `0.01` equivale a 1% ao mês.
 - Duplicata mercantil: spread de 1,5% a.m. (`0.015`)
 - Cheque pré-datado: spread de 2,5% a.m. (`0.025`)
 
-Quando as moedas forem diferentes, a conversão é aplicada sobre o valor presente. A taxa deve ser previamente cadastrada no sentido da conversão, por exemplo, `BRL` para `USD`.
+Quando as moedas forem diferentes, a conversão é aplicada sobre o valor presente. A taxa pode ser cadastrada no painel ou pelo endpoint. O vencimento é informado pelo operador e o prazo em meses é calculado pelo backend para manter o cálculo auditável.
 
 ## Endpoints iniciais
 
@@ -58,7 +61,7 @@ Exemplo de simulação:
 {
   "faceValue": 1000.00,
   "receivableType": "DUPLICATA_MERCANTIL",
-  "termInMonths": 1,
+  "dueDate": "2026-08-18",
   "baseRate": 0.01,
   "assetCurrency": "BRL",
   "paymentCurrency": "USD"
