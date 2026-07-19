@@ -1,17 +1,22 @@
 # Uso de IA
 
-Este projeto foi desenvolvido com apoio de uma IA como copiloto de engenharia.
+Este projeto usou IA como copiloto de engenharia. O autor revisou as decisões, executou o sistema e mantém responsabilidade integral pelo código entregue.
 
-## Uso realizado
+## Uso estratégico
 
-- Planejamento do escopo priorizado para uma entrega de nível pleno.
-- Criação do esqueleto inicial da API Spring Boot e da estrutura em camadas.
-- Revisão de decisões de modelagem e sugestões de testes.
+- Planejamento de escopo para entrega de nível pleno.
+- Estrutura Spring Boot, Angular e Docker Compose.
+- Modelagem de strategies, migrations, documentação e testes unitários.
+- Separação do frontend em componentes reutilizáveis e camada `core`.
+- Melhorias de UX: simulação automática, validação de vencimento, filtros e paginação.
 
-## Responsabilidade técnica
+## Revisões e correções
 
-Todo código sugerido será revisado, entendido, executado e ajustado pelo autor antes da entrega. Regras financeiras, arredondamento, validações e comportamento transacional serão validados com testes automatizados.
+- O requisito pede vencimento, não apenas prazo. O contrato foi alterado para receber `dueDate`; o backend calcula e audita o prazo aplicado.
+- A tela dependia do Swagger para câmbio. Foi criado formulário de taxa de câmbio no painel.
+- Uma chamada do extrato deixou de enviar filtros obrigatórios. O erro Angular foi identificado no build Docker e corrigido.
+- O OneDrive bloqueou dependências locais do Angular. O frontend passou a ser compilado em container Docker, sem depender de `node_modules` local para demonstração.
 
 ## Análise crítica
 
-A IA acelera a criação de estruturas repetitivas e a organização inicial. Ela não substitui a validação de regras financeiras, a revisão de segurança nem o entendimento das decisões adotadas.
+A IA acelerou estruturas repetitivas, documentação e propostas de teste. Ela não substituiu a validação prática de contratos, cálculos financeiros, migrations e builds. Esses pontos foram revisados durante o desenvolvimento.

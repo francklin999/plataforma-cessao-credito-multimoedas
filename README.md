@@ -5,21 +5,11 @@ Plataforma para simular e liquidar cessões de crédito em BRL e USD.
 ## Stack
 
 - Java 21 e Spring Boot 3
-- PostgreSQL
+- PostgreSQL e Flyway
 - Angular e TypeScript
 - Docker Compose
 
-## Estrutura
-
-- `backend/`: API REST, regras de negócio e persistência.
-- `frontend/`: painel do operador.
-- `docs/`: diagramas e decisões técnicas.
-
-Documentação complementar: [arquitetura e aceite](docs/architecture.md) e [diagrama ER](docs/er-diagram.md).
-
 ## Executar
-
-Com Docker Desktop em execução:
 
 ```bash
 docker compose up --build
@@ -27,52 +17,48 @@ docker compose up --build
 
 - API: `http://localhost:8080`
 - Swagger: `http://localhost:8080/swagger-ui.html`
-- Painel do operador: `http://localhost:4200`
+- Painel: `http://localhost:4200`
 
-## Testes
+## Fluxo do operador
 
-O build Docker da API executa os testes unitários. Para executar o frontend localmente, após instalar as dependências:
+1. Cadastre a taxa de câmbio quando as moedas forem diferentes.
+2. Preencha cedente, valor, tipo, vencimento, taxa base e moedas.
+3. A simulação ocorre automaticamente com os dados válidos.
+4. Liquide a operação e consulte o extrato paginado.
 
-```bash
-cd frontend
-npm test -- --watch=false
-```
+O vencimento bloqueia datas passadas. O backend calcula o prazo em blocos de 30 dias, arredondados para cima, e registra a data e o prazo aplicado para auditoria.
 
 ## Regras de precificação
 
-As taxas devem ser enviadas em formato decimal: `0.01` equivale a 1% ao mês.
-
-`valor presente = valor de face / (1 + taxa base + spread)^prazo em meses`
+`valor presente = valor de face / (1 + taxa base + spread)^prazo`
 
 - Duplicata mercantil: spread de 1,5% a.m. (`0.015`)
 - Cheque pré-datado: spread de 2,5% a.m. (`0.025`)
 
-Quando as moedas forem diferentes, a conversão é aplicada sobre o valor presente. A taxa pode ser cadastrada no painel ou pelo endpoint. O vencimento é informado pelo operador e o prazo em meses é calculado pelo backend para manter o cálculo auditável.
+Taxas usam formato decimal: `0.01` equivale a 1% ao mês. A conversão cambial é aplicada após a precificação.
 
-## Endpoints iniciais
+## Endpoints
 
 | Método | Rota | Finalidade |
 |---|---|---|
-| POST | `/api/v1/exchange-rates` | Cadastra uma taxa de câmbio |
-| POST | `/api/v1/pricing/simulations` | Simula o valor presente |
-| POST | `/api/v1/settlements` | Registra uma liquidação atômica |
-| GET | `/api/v1/settlements` | Extrato paginado com filtros |
+| POST | `/api/v1/exchange-rates` | Cadastra taxa de câmbio |
+| POST | `/api/v1/pricing/simulations` | Simula valor presente |
+| POST | `/api/v1/settlements` | Registra liquidação atômica |
+| GET | `/api/v1/settlements` | Extrato com filtros e paginação |
 
-Exemplo de taxa BRL/USD:
+## Arquitetura e documentação
 
-```json
-{"sourceCurrency":"BRL","targetCurrency":"USD","rate":0.20}
-```
+- [Arquitetura e critérios de aceite](docs/architecture.md)
+- [Diagrama ER](docs/er-diagram.md)
+- [Uso de IA](AI_USAGE.md)
 
-Exemplo de simulação:
+O backend usa controllers, camada de aplicação, domínio com Strategy Pattern e infraestrutura de persistência. O frontend organiza interface em `components/` e contratos/HTTP em `core/`.
 
-```json
-{
-  "faceValue": 1000.00,
-  "receivableType": "DUPLICATA_MERCANTIL",
-  "dueDate": "2026-08-18",
-  "baseRate": 0.01,
-  "assetCurrency": "BRL",
-  "paymentCurrency": "USD"
-}
+## Testes
+
+O backend cobre strategies e a regra de vencimento. O frontend cobre o cliente HTTP de simulação e câmbio.
+
+```bash
+cd frontend
+npm test -- --watch=false
 ```

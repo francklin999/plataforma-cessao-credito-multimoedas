@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Currency, Settlement, StatementFilters } from '../../core/models/credit-engine.models';
+import { Settlement, StatementFilters } from '../../core/models/credit-engine.models';
 
 @Component({
   selector: 'app-settlement-statement',
