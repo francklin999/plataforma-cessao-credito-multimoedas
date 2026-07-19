@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CreditEngineApiService } from './core/services/credit-engine-api.service';
-import { ExchangeRateRequest, PricingRequest, PricingResponse, Settlement, SettlementFormValue } from './core/models/credit-engine.models';
+import { ExchangeRateRequest, PricingRequest, PricingResponse, Settlement, SettlementFormValue, StatementFilters } from './core/models/credit-engine.models';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,11 @@ export class AppComponent implements OnInit {
   loading = false;
   rateLoading = false;
   rateMessage = '';
+  statementPage = 0;
+  statementTotalPages = 0;
+  statementTotalElements = 0;
+  statementLoading = false;
+  private statementFilters: StatementFilters = { page: 0, size: 20 };
 
   constructor(private readonly api: CreditEngineApiService) { }
 
@@ -30,7 +35,7 @@ export class AppComponent implements OnInit {
   settle(formValue: SettlementFormValue): void {
     this.error = ''; this.loading = true;
     this.api.settle(formValue.cedent, formValue.pricing).subscribe({
-      next: () => { this.loading = false; this.loadStatement(); },
+      next: () => { this.loading = false; this.loadStatement(this.statementFilters); },
       error: err => { this.error = err.error?.message ?? 'Não foi possível liquidar a operação.'; this.loading = false; }
     });
   }
@@ -43,7 +48,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private loadStatement(): void {
-    this.api.statement().subscribe({ next: page => this.settlements = page.content });
+  loadStatement(filters: StatementFilters = this.statementFilters): void {
+    this.statementLoading = true; this.statementFilters = filters;
+    this.api.statement(filters).subscribe({ next: page => { this.settlements = page.content; this.statementPage = page.number; this.statementTotalPages = page.totalPages; this.statementTotalElements = page.totalElements; this.statementLoading = false; }, error: () => this.statementLoading = false });
   }
 }

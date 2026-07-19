@@ -11,5 +11,6 @@ export class ExchangeRateFormComponent {
   @Output() save = new EventEmitter<ExchangeRateRequest>();
 
   form: ExchangeRateRequest = { sourceCurrency: 'BRL', targetCurrency: 'USD', rate: 0.20 };
-  submit(): void { this.save.emit({ ...this.form }); }
+  get isInvalid(): boolean { return this.form.rate <= 0 || this.form.sourceCurrency === this.form.targetCurrency; }
+  submit(): void { if (!this.isInvalid) this.save.emit({ ...this.form }); }
 }

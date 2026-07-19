@@ -6,5 +6,6 @@
     <label>Destino <select [(ngModel)]="form.targetCurrency" name="target"><option>USD</option><option>BRL</option></select></label>
     <label>Taxa <input type="number" min="0.00000001" step="0.0001" [(ngModel)]="form.rate" name="rate"></label>
   </div>
-  <button (click)="submit()" [disabled]="loading">Salvar taxa</button>
+  <small class="field-error" *ngIf="form.sourceCurrency === form.targetCurrency">As moedas devem ser diferentes.</small>
+  <button (click)="submit()" [disabled]="loading || isInvalid">Salvar taxa</button>
 </section>

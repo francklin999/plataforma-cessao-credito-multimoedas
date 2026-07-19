@@ -24,7 +24,13 @@ export interface Settlement {
   id: string;
   cedent: string;
   receivableType: ReceivableType;
+  faceValue: number;
+  dueDate: string;
+  termInMonths: number;
+  assetCurrency: Currency;
   paymentCurrency: Currency;
+  appliedSpread: number;
+  exchangeRate: number;
   presentValue: number;
   createdAt: string;
 }
@@ -42,4 +48,16 @@ export interface ExchangeRateRequest {
 
 export interface Page<T> {
   content: T[];
+  totalPages: number;
+  totalElements: number;
+  number: number;
+}
+
+export interface StatementFilters {
+  cedent?: string;
+  currency?: Currency | '';
+  from?: string;
+  to?: string;
+  page: number;
+  size: number;
 }

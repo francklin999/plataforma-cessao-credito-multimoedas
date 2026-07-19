@@ -2,8 +2,8 @@
 <main>
   <app-pricing-form [loading]="loading" (simulate)="simulate($event)" (settle)="settle($event)"></app-pricing-form>
   <p class="error" *ngIf="error">{{ error }}</p>
-  <app-exchange-rate-form [loading]="rateLoading" (save)="saveExchangeRate($event)"></app-exchange-rate-form>
   <p class="rate-message" *ngIf="rateMessage">{{ rateMessage }}</p>
   <app-pricing-result [simulation]="simulation"></app-pricing-result>
-  <app-settlement-statement [settlements]="settlements"></app-settlement-statement>
+  <app-exchange-rate-form [loading]="rateLoading" (save)="saveExchangeRate($event)"></app-exchange-rate-form>
+  <app-settlement-statement [settlements]="settlements" [page]="statementPage" [totalPages]="statementTotalPages" [totalElements]="statementTotalElements" [loading]="statementLoading" (search)="loadStatement($event)"></app-settlement-statement>
 </main>

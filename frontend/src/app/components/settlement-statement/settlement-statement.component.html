@@ -1,10 +1,30 @@
 <section class="card">
   <h2>Extrato de liquidações</h2>
-  <table>
-    <thead><tr><th>Data</th><th>Cedente</th><th>Tipo</th><th>Moeda</th><th>Valor presente</th></tr></thead>
+  <p class="subtitle">Valores, vencimento e parâmetros aplicados no momento da liquidação.</p>
+  <div class="filters">
+    <input placeholder="Filtrar cedente" [(ngModel)]="filters.cedent">
+    <select [(ngModel)]="filters.currency"><option value="">Todas as moedas</option><option>BRL</option><option>USD</option></select>
+    <input type="date" [(ngModel)]="filters.from"><input type="date" [(ngModel)]="filters.to">
+    <select [(ngModel)]="filters.size"><option [ngValue]="5">5 por página</option><option [ngValue]="10">10 por página</option><option [ngValue]="20">20 por página</option><option [ngValue]="50">50 por página</option></select>
+    <button (click)="applyFilters()">Filtrar</button>
+  </div>
+  <div class="table-wrapper"><table>
+    <thead><tr><th>Liquidação</th><th>Cedente / ativo</th><th>Face</th><th>Vencimento</th><th>Pagamento</th><th>Spread</th><th>Câmbio</th></tr></thead>
     <tbody>
-      <tr *ngFor="let item of settlements"><td>{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</td><td>{{ item.cedent }}</td><td>{{ item.receivableType }}</td><td>{{ item.paymentCurrency }}</td><td>{{ item.presentValue | number:'1.2-4' }}</td></tr>
-      <tr *ngIf="!settlements.length"><td colspan="5" class="muted">Nenhuma liquidação registrada.</td></tr>
+      <tr *ngFor="let item of settlements">
+        <td>{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td><strong>{{ item.cedent }}</strong><small>{{ item.receivableType }}</small></td>
+        <td>{{ item.assetCurrency }} {{ item.faceValue | number:'1.2-2' }}</td>
+        <td>{{ item.dueDate | date:'dd/MM/yyyy' }}<small>{{ item.termInMonths }} mês(es)</small></td>
+        <td><strong>{{ item.paymentCurrency }} {{ item.presentValue | number:'1.2-4' }}</strong></td>
+        <td>{{ item.appliedSpread | percent:'1.2-2' }}</td>
+        <td>{{ item.exchangeRate | number:'1.2-6' }}</td>
+      </tr>
+      <tr *ngIf="!settlements.length"><td colspan="7" class="muted">Nenhuma liquidação registrada.</td></tr>
     </tbody>
-  </table>
+  </table></div>
+  <div class="pagination">
+    <span>{{ totalElements }} registro(s)</span>
+    <div><button (click)="changePage(page - 1)" [disabled]="page === 0 || loading">Anterior</button><span>Página {{ page + 1 }} de {{ totalPages || 1 }}</span><button (click)="changePage(page + 1)" [disabled]="page + 1 >= totalPages || loading">Próxima</button></div>
+  </div>
 </section>
