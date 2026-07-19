@@ -29,6 +29,15 @@ docker compose up --build
 - Swagger: `http://localhost:8080/swagger-ui.html`
 - Painel do operador: `http://localhost:4200`
 
+## Testes
+
+O build Docker da API executa os testes unitários. Para executar o frontend localmente, após instalar as dependências:
+
+```bash
+cd frontend
+npm test -- --watch=false
+```
+
 ## Regras de precificação
 
 As taxas devem ser enviadas em formato decimal: `0.01` equivale a 1% ao mês.
