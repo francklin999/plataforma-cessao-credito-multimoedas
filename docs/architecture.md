@@ -33,4 +33,4 @@ O frontend segue a mesma intenção: `components/` contém componentes de aprese
 
 ## Convenção de vencimento
 
-O usuário informa a data de vencimento. O prazo usado pela fórmula é calculado como a quantidade de dias entre hoje e o vencimento, dividida por 30 e arredondada para cima. Vencimento no dia atual equivale a prazo zero.
+O usuário informa a data de vencimento. O motor calcula internamente os períodos da fórmula a partir da quantidade de dias até o vencimento, dividida por 30 e arredondada para cima. Vencimento no dia atual equivale a período zero.

@@ -8,6 +8,6 @@ import br.com.srm.creditengine.domain.model.Currency;
 import br.com.srm.creditengine.domain.model.ReceivableType;
 
 public record SettlementResponse(UUID id, String cedent, ReceivableType receivableType,
-                                 BigDecimal faceValue, LocalDate dueDate, Integer termInMonths, Currency assetCurrency,
+                                 BigDecimal faceValue, LocalDate dueDate, Currency assetCurrency,
                                  Currency paymentCurrency, BigDecimal baseRate, BigDecimal appliedSpread,
                                  BigDecimal exchangeRate, BigDecimal presentValue, Instant createdAt) { }

@@ -17,7 +17,6 @@ erDiagram
         varchar receivable_type
         numeric face_value
         date due_date
-        integer term_in_months
         varchar asset_currency
         varchar payment_currency
         numeric base_rate

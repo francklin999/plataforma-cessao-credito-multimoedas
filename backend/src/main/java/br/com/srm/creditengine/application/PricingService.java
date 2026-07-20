@@ -18,16 +18,16 @@ public class PricingService {
     }
 
     public PricingResponse simulate(PricingRequest request) {
-        int termInMonths = calculateTermInMonths(request.dueDate());
+        int periods = calculatePeriods(request.dueDate());
         BigDecimal assetPresentValue = strategyResolver.calculatePresentValue(request.faceValue(), request.baseRate(),
-                request.receivableType(), termInMonths);
+                request.receivableType(), periods);
         BigDecimal exchangeRate = exchangeRateService.latestRate(request.assetCurrency(), request.paymentCurrency());
         BigDecimal settlementValue = assetPresentValue.multiply(exchangeRate).setScale(4, RoundingMode.HALF_UP);
-        return new PricingResponse(request.receivableType(), request.dueDate(), termInMonths, strategyResolver.spreadFor(request.receivableType()),
+        return new PricingResponse(request.receivableType(), request.dueDate(), strategyResolver.spreadFor(request.receivableType()),
                 assetPresentValue, request.paymentCurrency(), exchangeRate, settlementValue);
     }
 
-    private int calculateTermInMonths(LocalDate dueDate) {
+    private int calculatePeriods(LocalDate dueDate) {
         long daysUntilDueDate = ChronoUnit.DAYS.between(LocalDate.now(), dueDate);
         return (int) Math.ceil(daysUntilDueDate / 30.0d);
     }

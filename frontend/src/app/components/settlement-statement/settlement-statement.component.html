@@ -15,7 +15,7 @@
         <td>{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
         <td><strong>{{ item.cedent }}</strong><small>{{ item.receivableType }}</small></td>
         <td>{{ item.assetCurrency }} {{ item.faceValue | number:'1.2-2' }}</td>
-        <td>{{ item.dueDate | date:'dd/MM/yyyy' }}<small>{{ item.termInMonths }} mês(es)</small></td>
+        <td>{{ item.dueDate | date:'dd/MM/yyyy' }}</td>
         <td><strong>{{ item.paymentCurrency }} {{ item.presentValue | number:'1.2-4' }}</strong></td>
         <td>{{ item.appliedSpread | percent:'1.2-2' }}</td>
         <td>{{ item.exchangeRate | number:'1.2-6' }}</td>

@@ -12,7 +12,6 @@ export interface PricingRequest {
 
 export interface PricingResponse {
   dueDate: string;
-  termInMonths: number;
   appliedSpread: number;
   presentValueInAssetCurrency: number;
   paymentCurrency: Currency;
@@ -26,7 +25,6 @@ export interface Settlement {
   receivableType: ReceivableType;
   faceValue: number;
   dueDate: string;
-  termInMonths: number;
   assetCurrency: Currency;
   paymentCurrency: Currency;
   appliedSpread: number;

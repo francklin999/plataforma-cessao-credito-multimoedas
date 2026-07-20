@@ -33,7 +33,6 @@ class PricingServiceTest {
         var result = service.simulate(request);
 
         assertThat(result.dueDate()).isEqualTo(dueDate);
-        assertThat(result.termInMonths()).isEqualTo(2);
         assertThat(result.presentValue()).isEqualByComparingTo("190.3629");
     }
 }

@@ -1,6 +1,6 @@
 <section class="card result" *ngIf="simulation">
   <h2>Resultado da simulação</h2>
-  <div><span>Vencimento / prazo aplicado</span><strong>{{ simulation.dueDate | date:'dd/MM/yyyy' }} · {{ simulation.termInMonths }} mês(es)</strong></div>
+  <div><span>Vencimento</span><strong>{{ simulation.dueDate | date:'dd/MM/yyyy' }}</strong></div>
   <div><span>Spread aplicado</span><strong>{{ simulation.appliedSpread | percent:'1.2-2' }}</strong></div>
   <div><span>Valor presente na moeda do título</span><strong>{{ simulation.presentValueInAssetCurrency | number:'1.2-4' }}</strong></div>
   <div><span>Taxa de câmbio</span><strong>{{ simulation.exchangeRate | number:'1.2-6' }}</strong></div>

@@ -5,6 +5,6 @@ import java.time.LocalDate;
 import br.com.srm.creditengine.domain.model.Currency;
 import br.com.srm.creditengine.domain.model.ReceivableType;
 
-public record PricingResponse(ReceivableType receivableType, LocalDate dueDate, Integer termInMonths, BigDecimal appliedSpread,
+public record PricingResponse(ReceivableType receivableType, LocalDate dueDate, BigDecimal appliedSpread,
                               BigDecimal presentValueInAssetCurrency, Currency paymentCurrency,
                               BigDecimal exchangeRate, BigDecimal presentValue) { }

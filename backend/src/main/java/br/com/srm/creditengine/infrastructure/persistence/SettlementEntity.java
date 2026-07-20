@@ -20,7 +20,6 @@ public class SettlementEntity {
     @Column(nullable = false, length = 120) private String cedent;
     @Enumerated(EnumType.STRING) @Column(nullable = false, length = 40) private ReceivableType receivableType;
     @Column(nullable = false, precision = 19, scale = 4) private BigDecimal faceValue;
-    @Column(nullable = false) private Integer termInMonths;
     @Column(nullable = false) private LocalDate dueDate;
     @Enumerated(EnumType.STRING) @Column(nullable = false, length = 3) private Currency assetCurrency;
     @Enumerated(EnumType.STRING) @Column(nullable = false, length = 3) private Currency paymentCurrency;
@@ -30,10 +29,10 @@ public class SettlementEntity {
     @Column(nullable = false, precision = 19, scale = 4) private BigDecimal presentValue;
     @Column(nullable = false, updatable = false) private Instant createdAt = Instant.now();
     protected SettlementEntity() { }
-    public SettlementEntity(String cedent, ReceivableType receivableType, BigDecimal faceValue, LocalDate dueDate, Integer termInMonths,
+    public SettlementEntity(String cedent, ReceivableType receivableType, BigDecimal faceValue, LocalDate dueDate,
                             Currency assetCurrency, Currency paymentCurrency, BigDecimal baseRate,
                             BigDecimal appliedSpread, BigDecimal exchangeRate, BigDecimal presentValue) {
-        this.cedent = cedent; this.receivableType = receivableType; this.faceValue = faceValue; this.dueDate = dueDate; this.termInMonths = termInMonths;
+        this.cedent = cedent; this.receivableType = receivableType; this.faceValue = faceValue; this.dueDate = dueDate;
         this.assetCurrency = assetCurrency; this.paymentCurrency = paymentCurrency; this.baseRate = baseRate;
         this.appliedSpread = appliedSpread; this.exchangeRate = exchangeRate; this.presentValue = presentValue;
     }
@@ -41,7 +40,6 @@ public class SettlementEntity {
     public String getCedent() { return cedent; }
     public ReceivableType getReceivableType() { return receivableType; }
     public BigDecimal getFaceValue() { return faceValue; }
-    public Integer getTermInMonths() { return termInMonths; }
     public LocalDate getDueDate() { return dueDate; }
     public Currency getAssetCurrency() { return assetCurrency; }
     public Currency getPaymentCurrency() { return paymentCurrency; }
