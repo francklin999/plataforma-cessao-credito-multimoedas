@@ -27,7 +27,7 @@ public class SettlementService {
         PricingResponse price = pricingService.simulate(request.pricing());
         var input = request.pricing();
         SettlementEntity entity = repository.save(new SettlementEntity(request.cedent().trim(), input.receivableType(),
-                input.faceValue(), input.termInMonths(), input.assetCurrency(), input.paymentCurrency(), input.baseRate(),
+                input.faceValue(), input.dueDate(), input.assetCurrency(), input.paymentCurrency(), input.baseRate(),
                 price.appliedSpread(), price.exchangeRate(), price.presentValue()));
         return toResponse(entity);
     }
@@ -43,8 +43,8 @@ public class SettlementService {
     }
 
     private SettlementResponse toResponse(SettlementEntity entity) {
-        return new SettlementResponse(entity.getId(), entity.getCedent(), entity.getReceivableType(), entity.getFaceValue(),
-                entity.getTermInMonths(), entity.getAssetCurrency(), entity.getPaymentCurrency(), entity.getBaseRate(),
+        return new SettlementResponse(entity.getId(), entity.getCedent(), entity.getReceivableType(), entity.getFaceValue(), entity.getDueDate(),
+                entity.getAssetCurrency(), entity.getPaymentCurrency(), entity.getBaseRate(),
                 entity.getAppliedSpread(), entity.getExchangeRate(), entity.getPresentValue(), entity.getCreatedAt());
     }
 }

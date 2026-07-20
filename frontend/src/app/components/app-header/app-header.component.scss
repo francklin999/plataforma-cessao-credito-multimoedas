@@ -1,0 +1,4 @@
+header { background: #102a43; color: #fff; padding: 18px calc((100% - 1080px) / 2); font-size: 18px; }
+strong { color: #41c4a6; margin-right: 6px; }
+span { float: right; color: #b8c8d8; font-size: 13px; }
+@media (max-width: 700px) { header { padding: 18px; } }

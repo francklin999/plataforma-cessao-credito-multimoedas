@@ -1,0 +1,27 @@
+<section class="card">
+  <h1>Simular cessão de crédito</h1>
+  <p class="muted">As taxas mensais usam formato decimal: 1% = 0,01.</p>
+  <div class="form-grid">
+    <label>Cedente <input [(ngModel)]="cedent" name="cedent"></label>
+    <label>Valor de face <input type="number" min="0.01" [(ngModel)]="form.faceValue" (ngModelChange)="onFormChange()" name="faceValue"></label>
+    <label>Tipo
+      <select [(ngModel)]="form.receivableType" (ngModelChange)="onFormChange()" name="type">
+        <option value="" disabled>Selecione</option>
+        <option value="DUPLICATA_MERCANTIL">Duplicata mercantil</option>
+        <option value="CHEQUE_PRE_DATADO">Cheque pré-datado</option>
+      </select>
+    </label>
+    <label>Vencimento
+      <input type="date" [attr.min]="minDueDate" [(ngModel)]="form.dueDate" (ngModelChange)="onFormChange()" name="dueDate" [class.invalid]="hasInvalidDueDate">
+      <small class="field-error" *ngIf="hasInvalidDueDate">Informe hoje ou uma data futura.</small>
+    </label>
+    <label>Taxa base mensal <input type="number" min="0" step="0.001" [(ngModel)]="form.baseRate" (ngModelChange)="onFormChange()" name="rate"></label>
+    <label>Moeda do título <select [(ngModel)]="form.assetCurrency" (ngModelChange)="onFormChange()" name="asset"><option value="" disabled>Selecione</option><option>BRL</option><option>USD</option></select></label>
+    <label>Moeda de pagamento <select [(ngModel)]="form.paymentCurrency" (ngModelChange)="onFormChange()" name="payment"><option value="" disabled>Selecione</option><option>BRL</option><option>USD</option></select></label>
+  </div>
+  <div class="actions">
+    <button class="primary" (click)="onSettle()" [disabled]="loading || isInvalid">Liquidar</button>
+    <span class="preview-status" *ngIf="loading">Atualizando simulação…</span>
+    <span class="preview-status" *ngIf="!loading && !isComplete">Preencha os dados para visualizar a simulação.</span>
+  </div>
+</section>

@@ -30,7 +30,7 @@ public class ExchangeRateService {
     @Transactional(readOnly = true)
     public BigDecimal latestRate(Currency source, Currency target) {
         if (source == target) return BigDecimal.ONE;
-        return repository.findFirstBySourceCurrencyAndTargetCurrencyOrderByEffectiveAtDesc(source, target)
+        return repository.findFirstBySourceCurrencyAndTargetCurrencyAndEffectiveAtLessThanEqualOrderByEffectiveAtDesc(source, target, Instant.now())
                 .map(ExchangeRateEntity::getRate)
                 .orElseThrow(() -> new ResourceNotFoundException("Não há taxa de câmbio vigente para " + source + "/" + target + "."));
     }
